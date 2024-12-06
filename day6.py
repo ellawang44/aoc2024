@@ -83,7 +83,9 @@ def add_obs(pos):
 count = 0
 for row in range(pristine.max_map):
     for col in range(pristine.max_map):
-        if pristine.guard_map[row][col] != '#': # already an obstacle, skip
+        if pristine.pos[0] == row and pristine.pos[1] == col: # skip guard's current position
+            continue
+        if patrol_instance.guard_map[row][col] == 'X': # the guard will not interact with anything not in its path already
             if add_obs((row, col)):
                 count += 1
 
