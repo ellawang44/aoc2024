@@ -6,7 +6,7 @@ class Format:
         self.dense_data = self.read_dense()
 
     def read_dense(self):
-        with open('input_day9.txt') as f:
+        with open('data/input_day9.txt') as f:
             dense = f.readline().strip()
         return dense
 

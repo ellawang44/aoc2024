@@ -2,7 +2,7 @@ import numpy as np
 
 # challenge 1
 safe = 0
-with open('input_day2.txt') as f:
+with open('data/input_day2.txt') as f:
     for line in f:
         line = np.int64(line.strip().split(' '))
         diff = line[1:] - line[:-1]
@@ -34,7 +34,7 @@ def tol_safe(level):
     return False
 
 num = 0
-with open('input_day2.txt') as f:
+with open('data/input_day2.txt') as f:
     for line in f:
         line = np.int64(line.strip().split(' '))
         if safe(line):

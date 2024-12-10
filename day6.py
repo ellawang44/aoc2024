@@ -8,7 +8,7 @@ class patrol:
         self.max_map = len(self.guard_map) # square map
         self.status = True
         self.steps = 0
-    
+
     def display(self):
         for row in self.guard_map:
             print(row)
@@ -16,7 +16,7 @@ class patrol:
     def read_map(self):
         '''read the map'''
         guard_map = []
-        with open('input_day6.txt') as f:
+        with open('data/input_day6.txt') as f:
             for line in f:
                 guard_map.append(list(line.strip()))
         return guard_map
@@ -36,7 +36,7 @@ class patrol:
         self.guard_map[self.pos[0]][self.pos[1]] = 'X'
         self.pos = new_pos
         self.steps += 1
-    
+
     def turn(self):
         self.dir = (self.dir + 1) % 4
 

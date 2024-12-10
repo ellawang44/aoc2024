@@ -2,7 +2,7 @@ import numpy as np
 
 rules = []
 updates = []
-with open('input_day5.txt') as f:
+with open('data/input_day5.txt') as f:
     for line in f:
         if '|' in line:
             rules.append([int(i) for i in line.strip().split('|')])
@@ -30,7 +30,7 @@ print('challenge 1', tot)
 def all_broken_rules(update):
     '''find all broken rules'''
     broken_rules = []
-    for rule in rules: 
+    for rule in rules:
         if rule[0] in update and rule[1] in update:
             if update.index(rule[0]) > update.index(rule[1]): # break rule
                 broken_rules.append(rule)

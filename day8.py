@@ -16,7 +16,7 @@ class Antenna:
 
     def read_antennas(self):
         data = []
-        with open('input_day8.txt') as f:
+        with open('data/input_day8.txt') as f:
             for line in f:
                 data.append(list(line.strip()))
         data = np.array(data)
@@ -63,7 +63,7 @@ class Antenna:
 
     def read_antennas(self):
         data = []
-        with open('input_day8.txt') as f:
+        with open('data/input_day8.txt') as f:
             for line in f:
                 data.append(list(line.strip()))
         data = np.array(data)

@@ -19,7 +19,7 @@ def operate(target, nums):
     return 0
 
 count = 0
-with open('input_day7.txt') as f:
+with open('data/input_day7.txt') as f:
     for line in f:
         target, nums = line.strip().split(': ')
         target = int(target)
@@ -53,7 +53,7 @@ def operate2(target, nums):
     return 0
 
 count = 0
-with open('input_day7.txt') as f:
+with open('data/input_day7.txt') as f:
     for line in f:
         target, nums = line.strip().split(': ')
         target = int(target)

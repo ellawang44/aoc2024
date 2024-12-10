@@ -38,7 +38,7 @@ def read_chunk(chunk):
     blobs = chunk.split(',')
     blobs[0].isdigit()
 
-with open('input_day3.txt') as f:
+with open('data/input_day3.txt') as f:
     stuff = ''
     for line in f:
         stuff = stuff + line
@@ -58,7 +58,7 @@ def dodont(line):
         new_line = new_line + valid[0]
     return new_line
 
-with open('input_day3.txt') as f:
+with open('data/input_day3.txt') as f:
     stuff = ''
     for line in f:
         stuff = stuff + line

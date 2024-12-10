@@ -1,7 +1,7 @@
 import numpy as np
 
 data = []
-with open('input_day4.txt') as f:
+with open('data/input_day4.txt') as f:
     for line in f:
         data.append(list(line.strip()))
 data = np.array(data)

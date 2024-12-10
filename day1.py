@@ -1,6 +1,6 @@
 import numpy as np
 
-data = np.loadtxt('input_day1.txt')
+data = np.loadtxt('data/input_day1.txt')
 
 # challenge 1
 print('challenge 1', int(np.sum(np.abs(data[:,0] - data[:,1]))))
