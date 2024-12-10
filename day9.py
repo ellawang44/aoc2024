@@ -61,20 +61,21 @@ class Format:
 
     def move_block(self, key):
         file_length = self.file_dict[key]
+        file_ind = np.where(self.block_format == key)[0][0]
         free_dict_inds = []
         for ind, val in self.free_dict.items():
-            if val >= file_length:
+            if ind < file_ind and val >= file_length:
                 free_dict_inds.append(ind)
         if len(free_dict_inds) > 0:
             free_dict_ind = min(free_dict_inds)
-            file_ind = np.where(self.block_format == key)[0][0]
             # move the file
             self.block_format[free_dict_ind:free_dict_ind+file_length] = np.array([key]*file_length)
             self.block_format[file_ind:file_ind+file_length] = np.array([-1]*file_length)
             # update free space
             orig_free_length = self.free_dict[free_dict_ind]
             del self.free_dict[free_dict_ind]
-            self.free_dict[free_dict_ind+file_length] = orig_free_length - file_length
+            if orig_free_length - file_length > 0:
+                self.free_dict[free_dict_ind+file_length] = orig_free_length - file_length
 
     def condense2(self):
         for key in list(range(len(self.file_dict)))[1:][::-1]:
@@ -83,7 +84,7 @@ class Format:
     def checksum(self):
         block_format = copy.deepcopy(self.block_format)
         block_format[np.where(block_format == -1)[0]] = 0
-        return np.sum(np.array(block_format)*np.arange(len(block_format)))
+        return np.sum(block_format*np.arange(len(block_format)))
 
 format = Format()
 format.parse_dense()
@@ -93,6 +94,8 @@ print('challenge 1', format.checksum())
 
 ############################
 
+format = Format()
+format.parse_dense()
 format.init_block()
 format.condense2()
 print('challenge 2', format.checksum())
