@@ -19,6 +19,24 @@ class Trail:
     def get_trailhead(self):
         return list(np.array(np.where(self.topo_map == 0)).T)
 
+    def all_trails(self, trail_head):
+        trails = [[trail_head]]
+        for _ in range(9):
+            new_trails = []
+            for trail in trails:
+                new_trails.extend(self.make_trail(trail))
+            trails = new_trails
+        return trails
+
+    def make_trail(self, trail):
+        next_pos = self.next_tile(trail[-1], len(trail)-1)
+        trails = []
+        for pos in next_pos:
+            new_trail = trail[:]
+            new_trail.append(pos)
+            trails.append(new_trail)
+        return trails
+
     def get_trail(self, head_pos):
         paths = {}
         height_dict = defaultdict(list)
@@ -75,3 +93,11 @@ for head in trailheads:
     tot += len(height_dict[8])
 
 print('challenge 1', tot)
+
+########################
+tot = 0
+for head in trailheads:
+    trails = trail.all_trails(head)
+    tot += len(trails)
+
+print('challenge 2', tot)
