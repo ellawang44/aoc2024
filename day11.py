@@ -1,6 +1,11 @@
+import functools
+import numpy as np
+from collections import defaultdict
+
 def flatten(xss):
     return [x for xs in xss for x in xs]
 
+@functools.lru_cache(None)
 def apply_rule(stone):
     if stone == 0:
         return [1]
@@ -18,7 +23,22 @@ for _ in range(25):
 
 print('challenge 1', len(stones))
 
-for _ in range(50):
-    stones = flatten([apply_rule(stone) for stone in stones])
+###############################
 
-print('challenge 2', len(stones))
+# write into dictionary, stone : repeats
+current_stones = defaultdict(int)
+ss, rr = np.unique(stones, return_counts=True)
+for s, r in zip(ss, rr):
+    current_stones[s] = r
+
+# iterate
+for _ in range(50):
+    new_stones = defaultdict(int)
+    for current_stone, current_repeat in current_stones.items():
+        next_stones = apply_rule(current_stone)
+        next_stones, next_repeat = np.unique(next_stones, return_counts=True)
+        for s, r in zip(next_stones, next_repeat):
+            new_stones[s] += r*current_repeat
+    current_stones = new_stones
+
+print('challenge 2', np.sum(list(current_stones.values())))
