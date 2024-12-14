@@ -29,7 +29,7 @@ class Bathroom:
             new_pos.append(self.move(init_pos, init_vel, time=time))
         return new_pos
 
-    def display2(self, pos, filename=0, show=False):
+    def display(self, pos, filename=0, show=False):
         dis_map = np.zeros(self.map)
         for p in pos:
             dis_map[p[0], p[1]] += 1
