@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Bathroom:
     def __init__(self):
@@ -22,19 +23,23 @@ class Bathroom:
         new_pos = (pos[0]+dist[0]) % self.map[0], (pos[1]+dist[1]) % self.map[1]
         return new_pos
 
-    def display(self, pos):
+    def move_all(self, time=1):
+        new_pos = []
+        for init_pos, init_vel in zip(self.init_pos, self.init_vel):
+            new_pos.append(self.move(init_pos, init_vel, time=time))
+        return new_pos
+
+    def display2(self, pos, filename=0, show=False):
         dis_map = np.zeros(self.map)
         for p in pos:
             dis_map[p[0], p[1]] += 1
-        for line in dis_map:
-            line = ''.join([str(i) for i in line]).replace('0', '.')
-            print(line)
+        plt.imshow(dis_map.T)
+        plt.savefig(f'img/{filename}.png')
+        plt.close()
 
 bathroom = Bathroom()
 # move robots
-new_pos = []
-for init_pos, init_vel in zip(bathroom.init_pos, bathroom.init_vel):
-    new_pos.append(bathroom.move(init_pos, init_vel, time=100))
+new_pos = bathroom.move_all(time=100)
 new_pos = np.array(new_pos)
 # calculate quadrants
 half_width = bathroom.map[0]//2
@@ -47,8 +52,9 @@ print('challenge 1', q1*q2*q3*q4)
 
 #######
 # I don't understand what a xmas tree looks like?
-
-new_pos = []
-for init_pos, init_vel in zip(bathroom.init_pos, bathroom.init_vel):
-    new_pos.append(bathroom.move(init_pos, init_vel, time=100000))
-bathroom.display(new_pos)
+width = 20
+for i in range(10000):
+    new_pos = np.array(bathroom.move_all(time=i))
+    if np.sum(new_pos[:,0] < width) + np.sum(new_pos[:,0] > (bathroom.map[0]-width)) < 150:
+        bathroom.display(new_pos, filename=i)
+# there's a bit of brute force, oh well.
