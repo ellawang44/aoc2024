@@ -37,6 +37,11 @@ class Bathroom:
         plt.savefig(f'img/{filename}.png')
         plt.close()
 
+    def calc_mid(self, pos):
+        width = self.map[0]//3
+        height = self.map[1]//3
+        return np.sum((width < pos[:,0]) & (pos[:,0] < (self.map[0]-width)) & (height < pos[:,1]) & (pos[:,1] < (self.map[1]-height)))
+
 bathroom = Bathroom()
 # move robots
 new_pos = bathroom.move_all(time=100)
@@ -51,10 +56,14 @@ q4 = np.sum((new_pos[:,0] > half_width) & (new_pos[:,1] > half_height))
 print('challenge 1', q1*q2*q3*q4)
 
 #######
-# I don't understand what a xmas tree looks like?
-width = 20
+
+# if you assume that the xmas tree will have something in the middle of the figure that has a lot of robots...
+# kind of the opposite of checking if an image is just noise
+# might fail if the middle of the tree is empty and it just draws a silhouette
+area = bathroom.map[0]*bathroom.map[1]
+density = len(bathroom.init_pos) / area
 for i in range(10000):
     new_pos = np.array(bathroom.move_all(time=i))
-    if np.sum(new_pos[:,0] < width) + np.sum(new_pos[:,0] > (bathroom.map[0]-width)) < 150:
+    mid = bathroom.calc_mid(new_pos)
+    if mid/area*9 > density*3:
         bathroom.display(new_pos, filename=i)
-# there's a bit of brute force, oh well.
