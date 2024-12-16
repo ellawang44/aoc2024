@@ -36,9 +36,8 @@ for _ in range(50):
     new_stones = defaultdict(int)
     for current_stone, current_repeat in current_stones.items():
         next_stones = apply_rule(current_stone)
-        next_stones, next_repeat = np.unique(next_stones, return_counts=True)
-        for s, r in zip(next_stones, next_repeat):
-            new_stones[s] += r*current_repeat
+        for s in next_stones:
+            new_stones[s] += current_repeat
     current_stones = new_stones
 
 print('challenge 2', np.sum(list(current_stones.values())))
