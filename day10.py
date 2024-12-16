@@ -20,6 +20,8 @@ class Trail:
         return list(np.array(np.where(self.topo_map == 0)).T)
 
     def all_trails(self, trail_head):
+        '''inner for loop: for each trail, extend it
+        outer for loop: extend the trail 9 times to get from 0 to 9.'''
         trails = [[trail_head]]
         for _ in range(9):
             new_trails = []
@@ -29,6 +31,7 @@ class Trail:
         return trails
 
     def make_trail(self, trail):
+        '''add one extra tile to the trail, if there are mulitple possible extra tiles to take, add all of them -- the return is list[trail]'''
         next_pos = self.next_tile(trail[-1], len(trail)-1)
         trails = []
         for pos in next_pos:
