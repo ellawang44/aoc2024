@@ -1,5 +1,7 @@
+import re
 import numpy as np
-from collections import defaultdict
+import heapq
+
 
 class Trail:
     def __init__(self):
@@ -62,6 +64,26 @@ class Trail:
             new_poss.append(new_pos_right)
         return new_poss
 
+    def next_tile2(self, curr_pos):
+        new_poss = []
+        # up
+        new_pos_up = (curr_pos[0], curr_pos[1]-1)
+        if self.legal_move(new_pos_up):
+            new_poss.append(('W', new_pos_up))
+        # down
+        new_pos_down = (curr_pos[0], curr_pos[1]+1)
+        if self.legal_move(new_pos_down):
+            new_poss.append(('E', new_pos_down))
+        # left
+        new_pos_left = (curr_pos[0]-1, curr_pos[1])
+        if self.legal_move(new_pos_left):
+            new_poss.append(('N', new_pos_left))
+        # right
+        new_pos_right = (curr_pos[0]+1, curr_pos[1])
+        if self.legal_move(new_pos_right):
+            new_poss.append(('S', new_pos_right))
+        return new_poss
+
     def legal_move(self, pos):
         if not self.out_of_bounds(pos) and self.maze[pos[0], pos[1]] != '#':
             return True
@@ -73,6 +95,48 @@ class Trail:
             return True
         else:
             return False
+
+    def cost(self, dir, pos1, pos2):
+        new_dir = self.get_dir(pos1, pos2)
+        if dir == new_dir:
+            return 1
+        elif dir in ['E', 'W'] and new_dir in ['E', 'W']:
+            return 2001
+        elif dir in ['N', 'S'] and new_dir in ['N', 'S']:
+            return 2001
+        else:
+            return 1001
+
+    def cost2(self, dir, new_dir, pos1, pos2):
+        if dir == new_dir:
+            return 1
+        elif dir in ['E', 'W'] and new_dir in ['E', 'W']:
+            return 2001
+        elif dir in ['N', 'S'] and new_dir in ['N', 'S']:
+            return 2001
+        else:
+            return 1001
+
+    def dij(self, heap):
+        heapq.heapify(heap)
+        current_cost, dir, pos = heapq.heappop(heap)
+        seen = {pos}
+        while pos != self.end:
+            #print(current_cost, dir, pos)
+            # add
+            next_pos = self.next_tile2(pos)
+            for n_dir, n_pos in next_pos:
+                n_cost = self.cost2(dir, n_dir, pos, n_pos)
+                # skip seen
+                if n_pos not in seen:
+                    heapq.heappush(heap, (n_cost+current_cost, n_dir, n_pos))
+            #print(heap)
+            # next point
+            current_cost, dir, pos = heapq.heappop(heap)
+            seen.add(pos)
+            #if current_cost > 3000:
+            #    break
+        return current_cost
 
     def score(self, trail):
         debug = 'E'
@@ -101,6 +165,7 @@ class Trail:
         elif pos1[0] - 1 == pos2[0] and pos1[1] == pos2[1]:
             return 'N'
 
+'''
 trail = Trail()
 trails = trail.all_trails()
 min_score = np.inf
@@ -109,3 +174,9 @@ for t in trails:
     if new_score < min_score:
         min_score = new_score
 print('challenge 1', min_score)
+'''
+
+trail = Trail()
+#print(trail.start, trail.end)
+# (13, 1) (1, 13)
+print('challenge 1', trail.dij([(0, 'E', trail.start)]))
